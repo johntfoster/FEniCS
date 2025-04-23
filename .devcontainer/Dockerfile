@@ -4,14 +4,13 @@ FROM mcr.microsoft.com/devcontainers/miniconda:3
 # copy "noop.txt" so the COPY instruction does not fail if no environment.yml exists.
 COPY environment.yml* .devcontainer/noop.txt .devcontainer/conda_init.txt /tmp/conda-tmp/
 
+# Set Conda directories to avoid permission issues
+ENV CONDA_PKGS_DIRS=/home/vscode/.conda/pkgs
+ENV CONDA_ENVS_DIRS=/home/vscode/.conda/envs
+
 RUN apt-get update; \
-    apt-get -yq install --no-install-recommends software-properties-common; \
-    add-apt-repository ppa:fenics-packages/fenics; \
-    apt-get update; \
-    apt-get -yq install --no-install-recommends fenics; \
     apt-get -yq install neovim; \
     rm -rf /var/lib/apt/lists/*
-
 
 RUN conda install mamba -c conda-forge -y; \
     mamba install python=3.11.9 jupyterlab=4.0.7 jupyterlab-git=0.50.1 -c conda-forge -y; \
