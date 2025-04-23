@@ -6,6 +6,8 @@ WORKDIR /root/workspace
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    xvfb \
     neovim \
     && rm -rf /var/lib/apt/lists/*
 
@@ -13,6 +15,9 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --no-cache-dir \
     jupyterlab==4.0.7 \
     jupyterlab-git==0.50.1
+
+# Install pyvista
+RUN /dolfinx-env/bin/python3 -m pip install pyvista
 
 # Disable JupyterLab announcements extension (as in your log)
 RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
