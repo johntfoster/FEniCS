@@ -8,7 +8,8 @@ WORKDIR /root/workspace
 RUN apt-get update && apt-get install -y \
     neovim \
     xvfb \
-    libgl1-mesa-glx \
+    libgl1 \
+    libgl1-mesa-dri \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
