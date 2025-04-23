@@ -1,20 +1,25 @@
-FROM mcr.microsoft.com/devcontainers/miniconda:3
+# Inherit from the official DOLFINx 0.9.0 image
+FROM dolfinx/dolfinx:v0.9.0
 
-# Copy environment.yml (if found) to a temp location so we update the environment. Also
-# copy "noop.txt" so the COPY instruction does not fail if no environment.yml exists.
-COPY environment.yml* .devcontainer/noop.txt .devcontainer/conda_init.txt /tmp/conda-tmp/
+# Set working directory
+WORKDIR /root/workspace
 
-# Set Conda directories to avoid permission issues
-ENV CONDA_PKGS_DIRS=/home/vscode/.conda/pkgs
-ENV CONDA_ENVS_DIRS=/home/vscode/.conda/envs
+# Install additional dependencies (optional, add as needed)
+RUN apt-get update && apt-get install -y \
+    git \
+    nano \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update; \
-    apt-get -yq install neovim; \
-    rm -rf /var/lib/apt/lists/*
+# Install Python packages (optional, add as needed)
+RUN pip install --no-cache-dir \
+    matplotlib \
+    scipy \
+    jupyterlab 
 
-RUN conda install mamba -c conda-forge -y; \
-    mamba install python=3.11.9 jupyterlab=4.0.7 jupyterlab-git=0.50.1 -c conda-forge -y; \
-    if [ -f "/tmp/conda-tmp/environment.yml" ]; then umask 0002 && mamba env update -n base -f /tmp/conda-tmp/environment.yml; fi \
-    && cat /tmp/conda-tmp/conda_init.txt >> /home/vscode/.bashrc \
-    && rm -rf /tmp/conda-tmp; \
-    jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
+USER vscode
+
+# Copy your code into the container (optional, can be mounted instead)
+# COPY navier_stokes_dolfinx.py .
+
+# Set default command to bash for interactive use
+CMD ["bash"]
