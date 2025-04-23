@@ -7,23 +7,7 @@ on:
 
 jobs:
 
-  condition_check:
-    runs-on: ubuntu-latest
-    outputs:
-      proceed: ${{ steps.check_condition.outputs.proceed }}
-    steps:
-      - id: check_condition
-        name: Check Repository Name Condition
-        run: |
-          echo "proceed=true" >> $GITHUB_OUTPUT
-          if [[ "${{ github.repository }}" =~ assignment[0-9]+- ]]; then
-            echo "This repository is an student repository, skipping docker build."
-            echo "proceed=false" >> $GITHUB_OUTPUT
-          fi
-
   build-and-push:
-    needs: condition_check
-    if: needs.condition_check.outputs.proceed == 'true'
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -50,4 +34,4 @@ jobs:
         with:
           file: .devcontainer/Dockerfile
           push: true
-          tags: ghcr.io/${{ env.repo_name_lower }}/python-devcontainer:latest
+          tags: ghcr.io/${{ env.repo_name_lower }}/fenics-devcontainer:latest
