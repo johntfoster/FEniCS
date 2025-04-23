@@ -1,26 +1,24 @@
-# Inherit from the official DOLFINx 0.9.0 image
+# Inherit from DOLFINx 0.9.0
 FROM dolfinx/dolfinx:v0.9.0
 
-# Set working directory for Codespace
+# Set working directory
 WORKDIR /root/workspace
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
-    xvfb \
     neovim \
+    xvfb \
+    libgl1-mesa-glx \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies to match your requirements
+# Install Python dependencies
 RUN pip install --no-cache-dir \
     jupyterlab==4.0.7 \
-    jupyterlab-git==0.50.1
+    jupyterlab-git==0.50.1 \
+    pyvista
 
-# Install pyvista
-RUN /dolfinx-env/bin/python3 -m pip install pyvista
-
-# Disable JupyterLab announcements extension (as in your log)
+# Disable JupyterLab announcements
 RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
 
-# Set default command to bash for interactive use
+# Set default command
 CMD ["bash"]
