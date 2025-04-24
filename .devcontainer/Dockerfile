@@ -1,5 +1,6 @@
 # Inherit from DOLFINx 0.9.0
-FROM dolfinx/dolfinx:v0.9.0
+# FROM dolfinx/dolfinx:v0.9.0
+FROM dolfinx/dolfinx:nightly
 
 # Set working directory
 WORKDIR /root/workspace
