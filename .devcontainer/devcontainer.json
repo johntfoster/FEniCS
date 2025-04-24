@@ -5,16 +5,18 @@
         "vscode": {
             "extensions": [
                 "ms-python.python",
-                "ms-toolsai.jupyter",
-                "ms-vscode-remote.remote-containers"
-            ]
+                "ms-vscode-remote.remote-containers",
+                "ms-toolsai.jupyter"
+            ],
+            "settings": {
+                "jupyter.defaultKernel": "dolfinx-env"
+            }
         }
     },
-    "runArgs": [
-        "--privileged"
-    ],
+    "runArgs": ["--privileged"],
     "mounts": [
         "source=${localWorkspaceFolder},target=/root/workspace,type=bind,consistency=cached"
     ],
-    "postCreateCommand": "pip list && python3 -c 'import dolfinx, basix, ufl; print(f\"DOLFINx: {dolfinx.__version__}, Basix: {basix.__version__}, UFL: {ufl.__version__}\")'"
+    "postCreateCommand": "pip list && python3 -c 'import dolfinx, basix, ufl; print(f\"DOLFINx: {dolfinx.__version__}, Basix: {basix.__version__}, UFL: {ufl.__version__}\")'",
+    "postStartCommand": "source /dolfinx-env/bin/activate && jupyter kernelspec list"
 }

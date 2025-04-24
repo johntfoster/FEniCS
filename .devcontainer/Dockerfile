@@ -13,10 +13,15 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-RUN /dolfinx-env/bin/python -m pip install --no-cache-dir \
-    jupyterlab \
+RUN pip install --no-cache-dir \
+    jupyterlab==4.0.7 \
+    jupyterlab-git==0.50.1 \
+    pyvista \
     scipy \
-    pyvista
+    ipykernel
+
+# Register DOLFINx virtual environment as a Jupyter kernel
+RUN /dolfinx-env/bin/python -m ipykernel install --user --name dolfinx-env --display-name "DOLFINx Env"
 
 # Disable JupyterLab announcements
 RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
