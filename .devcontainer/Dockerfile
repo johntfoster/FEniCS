@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
 
 # Install Python dependencies
 RUN pip install --no-cache-dir \
-    jupyterlab==4.0.7 \
-    jupyterlab-git==0.50.1 \
+    jupyterlab \
+    scipy \
     pyvista
 
 # Disable JupyterLab announcements
